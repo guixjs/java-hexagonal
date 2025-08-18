@@ -1,18 +1,16 @@
 package com.projetos.todo.application.usecases;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.projetos.todo.adapters.inbound.dtos.CreateTaskRequest;
 import com.projetos.todo.adapters.inbound.dtos.TaskResponse;
 import com.projetos.todo.adapters.inbound.mappers.TaskMapper;
 import com.projetos.todo.domain.task.Task;
 import com.projetos.todo.domain.task.TaskRepository;
 import com.projetos.todo.domain.task.TaskService;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-@Service
 public class TaskServiceImpl implements TaskService {
 
   private final TaskRepository repository;
