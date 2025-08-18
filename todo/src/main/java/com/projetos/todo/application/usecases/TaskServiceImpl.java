@@ -1,5 +1,8 @@
-package com.projetos.todo.application.usecase;
+package com.projetos.todo.application.usecases;
 
+import com.projetos.todo.adapters.inbound.dtos.CreateTaskRequest;
+import com.projetos.todo.adapters.inbound.dtos.TaskResponse;
+import com.projetos.todo.adapters.inbound.mappers.TaskMapper;
 import com.projetos.todo.domain.task.Task;
 import com.projetos.todo.domain.task.TaskRepository;
 import com.projetos.todo.domain.task.TaskService;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -18,14 +22,16 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  public Task createTask(String title, String description) {
-    Task task = new Task(null, title, description, false);
+  public Task createTask(CreateTaskRequest request) {
+    Task task = TaskMapper.toTaskDomain(request);
     return this.repository.save(task);
   }
 
   @Override
-  public List<Task> getAllTasks() {
-    return repository.findAll();
+  public List<TaskResponse> getAllTasks() {
+    return repository.findAll().stream()
+        .map(taskRes -> TaskMapper.toResponse(taskRes))
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -33,5 +39,3 @@ public class TaskServiceImpl implements TaskService {
     repository.deleteById(id);
   }
 }
-
-
